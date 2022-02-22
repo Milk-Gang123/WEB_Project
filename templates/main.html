@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="alert alert-dark" align="right">Python pixel art</h1>
+<header class="header">
+    <nav class="navbar navbar-expand-lg fixed-top py-3">
+        <div class="margin_left">
+            <div id="navbarSupportedContentUp" class="collapse navbar-collapse">
+                <form class="login_form" method="post">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <div class="input__wrapper">
+                           <input name="file" type="file" name="file" id="input__file" class="input input__file" multiple>
+                           <label for="input__file" class="button_plate">
+                              <span class="input__file-button-text">Выберите файл</span>
+                           </label>
+                        </div>
+                    </li>
+                    <li>
+                        <button type="submit" class="button_plate">Открыть</button>
+                    </li>
+                    <li class="nav-item"><button class="button_plate"><a style="color: white" href="{{processed_image}}" download>Скачать</a></button></li>
+                </ul>
+                </form>
+            </div>
+        </div>
+    </nav>
+</header>
+<main>
+    <div class="sidebar_l">
+	    <ul class="navbar-nav ml-auto">
+            <li class="nav-item"><button class="button_plate"><a href="#" class="nav-link text-uppercase font-weight-bold">File</a></button></li>
+            <li class="nav-item"><button class="button_plate"><a href="#" class="nav-link text-uppercase font-weight-bold">Download</a></button></li>
+            <li class="nav-item"><button class="button_plate"><a href="#" class="nav-link text-uppercase font-weight-bold">Download</a></button></li>
+            <li class="nav-item"><button class="button_plate"><a href="#" class="nav-link text-uppercase font-weight-bold">Download</a></button></li>
+            <li class="nav-item"><button class="button_plate"><a href="#" class="nav-link text-uppercase font-weight-bold">Download</a></button></li>
+            <li class="nav-item"><button class="button_plate"><a href="#" class="nav-link text-uppercase font-weight-bold">Download</a></button></li>
+        </ul>
+	</div>
+    <div class="sidebar_r">
+	    <ul class="navbar-nav ml-auto">
+            <li class="nav-item"><button class="button_plate"><a href="#" class="nav-link text-uppercase font-weight-bold">File</a></button></li>
+            <li class="nav-item"><button class="button_plate"><a href="#" class="nav-link text-uppercase font-weight-bold">Download</a></button></li>
+            <li class="nav-item"><button class="button_plate"><a href="#" class="nav-link text-uppercase font-weight-bold">Download</a></button></li>
+            <li class="nav-item"><button class="button_plate"><a href="#" class="nav-link text-uppercase font-weight-bold">Download</a></button></li>
+            <li class="nav-item"><button class="button_plate"><a href="#" class="nav-link text-uppercase font-weight-bold">Download</a></button></li>
+            <li class="nav-item"><button class="button_plate"><a href="#" class="nav-link text-uppercase font-weight-bold">Download</a></button></li>
+        </ul>
+	</div>
+    <div class="content">
+        {% if current_image != '' %}
+            <img src="{{processed_image}}" class="pr_img">
+        {% endif %}
+	</div>
+
+
+</main>
+{% endblock %}
