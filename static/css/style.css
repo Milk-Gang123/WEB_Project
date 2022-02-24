@@ -55,7 +55,7 @@
      background: #3b3b3b;
      float: right;
      width: 15%;
-     height: 700px;
+     height: 620px;
      border-radius: 6px;
      position: relative;
 }
@@ -63,7 +63,7 @@
      background: #3b3b3b;
      float: left;
      width: 15%;
-     height: 700px;
+     height: 620px;
      border-radius: 6px;
 }
 .footer {
@@ -75,7 +75,7 @@
 .content {
      background: #212121;
      width: 60%;
-     height: 700px;
+     height: 620px;
      margin-left: 20%;
      border-radius: 6px;
 }
@@ -140,4 +140,8 @@ body {
 }
 .margin_left {
     margin-left: 50px;
+}
+body {
+  height: 100vh;
+  overflow-y: hidden;
 }

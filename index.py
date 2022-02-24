@@ -13,7 +13,7 @@ processed_image_path = ''
 
 user32 = ctypes.windll.user32
 screensize = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
-image_size = (int(screensize[0] * 0.6), 700)
+image_size = (int(screensize[0] * 0.6), 620)
 print(image_size)
 
 
@@ -47,7 +47,5 @@ def base():
 
 
 
-
-
 if __name__ == "__main__":
-    app.run(port=8080, host="127.0.0.1")
+    app.run(port=8000, host="127.0.0.1")
