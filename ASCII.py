@@ -57,7 +57,7 @@ class ASCIIConverter():
 
 class Colored_ASCII(ASCIIConverter):
     def __init__(self):
-        self.font_size = 12
+        self.font_size = 8
         pygame.font.init()
         self.font = pygame.font.SysFont('arial', self.font_size, bold=True)
         self.char_step = int(self.font_size * 0.6)
@@ -99,7 +99,7 @@ class Colored_ASCII(ASCIIConverter):
 app = ASCIIConverter()
 color_app = Colored_ASCII()
 image = Image.open('static/img/img.png')
-resized_image = color_app.resize_image(image, 1920)
+resized_image = color_app.resize_image(image, 720)
 gray_image = color_app.gray_image(resized_image)
 list_chars = color_app.pix_to_ascii(gray_image)
 list_colors = color_app.get_palette(resized_image)
