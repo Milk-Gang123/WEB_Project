@@ -57,7 +57,7 @@ class ASCIIConverter():
 
 class Colored_ASCII(ASCIIConverter):
     def __init__(self):
-        self.font_size = 8
+        self.font_size = 12
         pygame.font.init()
         self.font = pygame.font.SysFont('arial', self.font_size, bold=True)
         self.char_step = int(self.font_size * 0.6)
@@ -85,7 +85,7 @@ class Colored_ASCII(ASCIIConverter):
                     char = list_chars[x][-y]
                     char_color = list_colors[x][-y]
                     rendered_char = self.font.render(char, False, char_color)
-                    rendered_char = pygame.transform.rotate(rendered_char, -90)
+                    rendered_char = pygame.transform.rotate(rendered_char, -270)
                     screen.blit(rendered_char, (x, y))
                 except Exception:
                     pass
