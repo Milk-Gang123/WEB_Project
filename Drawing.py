@@ -1,6 +1,4 @@
-from PIL import Image
 import cv2
-import pygame
 import numpy
 
 
@@ -14,7 +12,7 @@ class Draw():
         width, height, h = image.shape
         ratio = height / width
         new_height = int(new_width * ratio)
-        cv2.resize(image, (new_height, new_width))
+        image = cv2.resize(image, (new_height, new_width))
         self.width = new_width
         self.height = new_height
 
@@ -42,9 +40,9 @@ class Draw():
 
 app = Draw()
 resized_image = app.open_image('static/img/img.png', 720)
-cv2.imwrite('static/img/processed_image.jpg', resized_image)
-edge_mask = app.pencil_drawing('static/img/processed_image.jpg', 7, 7)
-cartoon_image = app.cartoon_maker(resized_image, 11)
+cv2.imwrite('static/img/processed_image.png', resized_image)
+edge_mask = app.pencil_drawing('static/img/processed_image.png', 7, 7)
+cartoon_image = app.cartoon_maker(resized_image, 9)
 cartoon = cv2.bitwise_and(cartoon_image, cartoon_image, mask=edge_mask)
 cv2.imshow('image', cartoon)
 cv2.waitKey(0)

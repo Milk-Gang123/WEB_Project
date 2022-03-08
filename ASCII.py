@@ -57,7 +57,7 @@ class ASCIIConverter():
 
 class Colored_ASCII(ASCIIConverter):
     def __init__(self):
-        self.font_size = 8
+        self.font_size = 24
         pygame.font.init()
         self.font = pygame.font.SysFont('arial', self.font_size, bold=True)
         self.char_step = int(self.font_size * 0.6)
