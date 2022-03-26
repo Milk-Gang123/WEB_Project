@@ -8,6 +8,7 @@ from data import db_session
 from data.db_session import global_init, create_session
 from data.users import User
 from forms.user import RegisterForm, LoginForm
+from ASCII import ASCIIConverter
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
@@ -93,6 +94,17 @@ def base():
         current_image.save(current_image_path)
         resize_image(current_image_path, processed_image_path, image_size)
         return 'gg'
+
+
+@app.route('/ascii')
+def make_ascii():
+    app = ASCIIConverter()
+    image = Image.open(current_image_path)
+    resized_image = app.resize_image(image, image_size[0])
+    gray_image = app.gray_image(resized_image)
+    list_chars = app.pix_to_ascii(gray_image)
+    app.draw_image(list_chars, processed_image_path)
+    return redirect('/main')
 
 
 

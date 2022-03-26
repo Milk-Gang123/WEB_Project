@@ -39,7 +39,7 @@ class ASCIIConverter():
 
         return list_chars
 
-    def draw_image(self, list_chars):
+    def draw_image(self, list_chars, route):
         screen = pygame.display.set_mode((self.height, self.width))
         screen.fill('black')
         for y in range(0, self.width, self.char_step):
@@ -52,7 +52,7 @@ class ASCIIConverter():
                 except Exception:
                     pass
         screen = pygame.transform.rotate(screen, -90)
-        pygame.image.save(screen, 'static/img/processed_image_path.jpg')
+        pygame.image.save(screen, route)
 
 
 class Colored_ASCII(ASCIIConverter):
@@ -91,24 +91,3 @@ class Colored_ASCII(ASCIIConverter):
                     pass
         screen = pygame.transform.rotate(screen, -90)
         pygame.image.save(screen, 'static/img/processed_image_path.jpg')
-
-
-
-
-
-app = ASCIIConverter()
-color_app = Colored_ASCII()
-image = Image.open('static/img/img.png')
-resized_image = color_app.resize_image(image, 720)
-gray_image = color_app.gray_image(resized_image)
-list_chars = color_app.pix_to_ascii(gray_image)
-list_colors = color_app.get_palette(resized_image)
-color_app.draw_image(list_chars, list_colors)
-
-# app = ASCIIConverter()
-# color_app = Colored_ASCII()
-# image = Image.open('static/img/img.png')
-# resized_image = app.resize_image(image, 720)
-# gray_image = app.gray_image(resized_image)
-# list_chars = app.pix_to_ascii(gray_image)
-# app.draw_image(list_chars)
