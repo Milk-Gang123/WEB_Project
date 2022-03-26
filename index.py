@@ -96,11 +96,13 @@ def base():
         return 'gg'
 
 
-@app.route('/ascii')
+@app.route('/ascii', methods=['POST'])
 def make_ascii():
-    app = ASCIIConverter()
+    font_size = int(request.form['font-size'])
+    app = ASCIIConverter(image_size[0], image_size[1], font_size)
     image = Image.open(current_image_path)
-    resized_image = app.resize_image(image, image_size[0])
+    resized_image = image.resize(image_size)
+    resized_image.save('aboba.png')
     gray_image = app.gray_image(resized_image)
     list_chars = app.pix_to_ascii(gray_image)
     app.draw_image(list_chars, processed_image_path)

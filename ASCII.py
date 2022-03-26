@@ -3,14 +3,14 @@ import pygame
 
 
 class ASCIIConverter():
-    def __init__(self):
+    def __init__(self, width, height, font_size):
         self.ascii_chars = [' ', '.', '+', '*', '~', 'x', '#', 'w', '%', '8', '@']
-        self.font_size = 12
+        self.font_size = font_size
         pygame.font.init()
         self.font = pygame.font.SysFont('arial', self.font_size, bold=True)
         self.char_step = int(self.font_size * 0.6)
-        self.width = 100
-        self.height = 100
+        self.width = width
+        self.height = height
 
     def resize_image(self, image, new_width=100):
         width, height = image.size
