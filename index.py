@@ -1,5 +1,7 @@
 import os
 import ctypes
+
+import flask
 from PIL import Image
 from flask import Flask, render_template, request
 from werkzeug.utils import redirect
@@ -84,14 +86,8 @@ def base():
     elif request.method == 'POST':
         processed_image_path = 'static/img/processed_image_path.jpg'
         current_image_path = 'static/img/current_image.jpg'
-        filename = request.form['file']
-        pth = 'C:\\'
-        for root, dirnames, filenames in os.walk(pth):
-            for file in filenames:
-                if file == filename:
-                    path = os.path.join(root, file)
-        current_image = Image.open(path)
-        current_image.save(current_image_path)
+        file = request.files['pw']
+        file.save(current_image_path)
         resize_image(current_image_path, processed_image_path, image_size)
         return 'gg'
 
@@ -102,7 +98,6 @@ def make_ascii():
     app = ASCIIConverter(image_size[0], image_size[1], font_size)
     image = Image.open(current_image_path)
     resized_image = image.resize(image_size)
-    resized_image.save('aboba.png')
     gray_image = app.gray_image(resized_image)
     list_chars = app.pix_to_ascii(gray_image)
     app.draw_image(list_chars, processed_image_path)
