@@ -39,10 +39,11 @@ class Draw():
 
 
 app = Draw()
-resized_image = app.open_image('static/img/img.png', 720)
+resized_image = app.open_image('static/img/img.jpg', 720)
 cv2.imwrite('static/img/processed_image.png', resized_image)
-edge_mask = app.pencil_drawing('static/img/processed_image.png', 7, 7)
-cartoon_image = app.cartoon_maker(resized_image, 9)
+edge_mask = app.pencil_drawing('static/img/processed_image.png', 5, 5)
+cartoon_image = app.cartoon_maker(resized_image, 7)
 cartoon = cv2.bitwise_and(cartoon_image, cartoon_image, mask=edge_mask)
+cv2.imwrite('static/img/processed_image.png', cartoon)
 cv2.imshow('image', cartoon)
 cv2.waitKey(0)

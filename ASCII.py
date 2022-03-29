@@ -56,13 +56,13 @@ class ASCIIConverter():
 
 
 class Colored_ASCII(ASCIIConverter):
-    def __init__(self):
-        self.font_size = 24
+    def __init__(self, width, height, font_size):
+        self.font_size = font_size
         pygame.font.init()
         self.font = pygame.font.SysFont('arial', self.font_size, bold=True)
         self.char_step = int(self.font_size * 0.6)
-        self.width = 100
-        self.height = 100
+        self.width = width
+        self.height = height
         self.ascii_chars = [' ', ':', 'o', 'x', '#', '&', '$', '&', 'W', '8', '@']
 
     def get_palette(self, image):
@@ -91,3 +91,12 @@ class Colored_ASCII(ASCIIConverter):
                     pass
         screen = pygame.transform.rotate(screen, -90)
         pygame.image.save(screen, 'static/img/processed_image_path.jpg')
+
+
+app = Colored_ASCII(720, 480, 8)
+image = Image.open('static/img/carousel_1.png')
+resized_image = app.resize_image(image, app.width)
+gray_image = app.gray_image(resized_image)
+list_chars = app.pix_to_ascii(gray_image)
+list_colors = app.get_palette(resized_image)
+app.draw_image(list_chars, list_colors)
