@@ -30,9 +30,6 @@ def resize_image(image_path, save_path, image_size):
     new_image.save(save_path)
 
 
-
-
-
 @login_manager.user_loader
 def load_user(user_id):
     global_init('db/blogs.db')
