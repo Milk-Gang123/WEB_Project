@@ -1,22 +1,23 @@
-{% extends "base.html" %}
+{% extends "unauthorized_base.html" %}
 
 {% block content %}
-    <form action="" method="post" novalidate>
-        <div>
-            {{ form.csrf_token }}
-        </div>
-        {% for field in form if field.name != 'csrf_token' %}
-            <div>
-                {{ field.label() }}
-                {% if field.name != 'remember_me' %}
-                    {{ field(class="form-control") }}
-                {% else %}
-                    {{ field() }}
-                {% endif %}
-                {% for error in field.errors %}
-                    <div class="error">{{ error }}</div>
-                {% endfor %}
-            </div>
-        {% endfor %}
-    </form>
+<h1 style="color:white; text-align: center;">Вход</h1>
+<form action="" method="post" class="reg_form" novalidate>
+    <p>
+        {{ form.csrf_token }}
+    <p>
+    {% for field in form if field.name != 'csrf_token' %}
+        <p>
+            {{ field.label() }}
+            {% if field.name != 'remember_me' %}
+                {{ field(class="form-control") }}
+            {% else %}
+                {{ field() }}
+            {% endif %}
+            {% for error in field.errors %}
+                <div class="error">{{ error }}</div>
+            {% endfor %}
+        <p>
+    {% endfor %}
+</form>
 {% endblock %}

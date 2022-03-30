@@ -79,7 +79,7 @@ def login():
         if user and user.check_password(form.password.data):
             login_user(user, remember=form.remember_me.data)
             return redirect("/main")
-        return  render_template('login.html', message="Неправильный логин или пароль", form=form)
+        return render_template('login.html', message="Неправильный логин или пароль", form=form)
     return render_template("login.html", title="Авторизация", form=form)
 
 
