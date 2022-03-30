@@ -1,7 +1,24 @@
 {% extends "unauthorized_base.html" %}
 
 {% block content %}
-<h1 class="alert alert-primary" align="right">Python Art</h1>
+<h1 class="alert alert-custom  fade in alert-dismissable show" align="left">Python Art</h1>
+
+<nav class="navbar navbar-expand-lg fixed-top py-3">
+  <div style="position: absolute; margin-left: 70%; margin-top: 3%; z-index:10;">
+    <a href="/registration" class="button_plate">Register</a>
+    <a href="/login" class="button_plate">Login</a>
+  </div>
+</nav>
+
+<div class="sidebar">
+  <p style="color:white; text-shadow: 6px 6px 0px rgba(0,0,0,0.2); font-size: 500%;">Make your Art</p>
+  <p style="color:white; text-shadow: 6px 6px 0px rgba(0,0,0,0.2); font-size: 320%">Using simple python</p>
+  <p style="color:white; text-shadow: 6px 6px 0px rgba(0,0,0,0.2); font-size: 320%">technologies</p>
+</div>
+
+<div style="position: absolute; margin-left: 12%; margin-top: 30%; z-index:10;">
+  <a href="/registration" class="button_plate">Try in now!</a>
+</div>
 
 <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
   <div class="carousel-inner">

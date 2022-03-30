@@ -90,13 +90,14 @@ class Colored_ASCII(ASCIIConverter):
                 except Exception:
                     pass
         screen = pygame.transform.rotate(screen, -90)
-        pygame.image.save(screen, 'static/img/processed_image_path.jpg')
+        pygame.image.save(screen, 'static/img/carousel_1.png')
 
 
-app = Colored_ASCII(720, 480, 8)
-image = Image.open('static/img/carousel_1.png')
-resized_image = app.resize_image(image, app.width)
-gray_image = app.gray_image(resized_image)
-list_chars = app.pix_to_ascii(gray_image)
-list_colors = app.get_palette(resized_image)
-app.draw_image(list_chars, list_colors)
+if __name__ == "__main__":
+    app = Colored_ASCII(720, 480, 8)
+    image = Image.open('static/img/img.png')
+    resized_image = app.resize_image(image, app.width)
+    gray_image = app.gray_image(resized_image)
+    list_chars = app.pix_to_ascii(gray_image)
+    list_colors = app.get_palette(resized_image)
+    app.draw_image(list_chars, list_colors)
