@@ -2,6 +2,11 @@
 
 {% block content %}
 <h1 style="color:white; text-align: center;">Вход</h1>
+{% if message %}
+    <div style="position: absolute; margin-left:82%; margin-top:-3%;">
+        <div class="alert alert-danger" align="center">{{message}}</div>
+    </div>
+{% endif %}
 <form action="" method="post" class="reg_form" novalidate>
     <p>
         {{ form.csrf_token }}

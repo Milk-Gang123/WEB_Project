@@ -90,7 +90,7 @@ class Colored_ASCII(ASCIIConverter):
                 except Exception:
                     pass
         screen = pygame.transform.rotate(screen, -90)
-        pygame.image.save(screen, 'static/img/carousel_1.png')
+        pygame.image.save(screen, 'static/img/processed_image.png')
 
 
 if __name__ == "__main__":

@@ -89,7 +89,7 @@ def base():
         return render_template('main.html', **params)
 
     elif request.method == 'POST':
-        processed_image_path = 'static/img/carousel_1.png'
+        processed_image_path = 'static/img/processed_image.png'
         current_image_path = 'static/img/current_image.jpg'
         file = request.files['pw']
         file.save(current_image_path)
