@@ -9,4 +9,4 @@ def make_pixel_art(file, pixel_size):
         image.save('static/img/processed_image_path.png')
 
 
-make_pixel_art('static/img/img.png', 8)
+make_pixel_art('static/img/filter_page_background.png', 8)

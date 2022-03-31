@@ -95,7 +95,7 @@ class Colored_ASCII(ASCIIConverter):
 
 if __name__ == "__main__":
     app = Colored_ASCII(720, 480, 8)
-    image = Image.open('static/img/img.png')
+    image = Image.open('static/img/filter_page_background.png')
     resized_image = app.resize_image(image, app.width)
     gray_image = app.gray_image(resized_image)
     list_chars = app.pix_to_ascii(gray_image)

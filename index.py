@@ -9,6 +9,7 @@ from flask_login import LoginManager, login_user, login_required, logout_user, c
 from data import db_session
 from data.db_session import global_init, create_session
 from data.users import User
+from data.filters import Filter
 from forms.user import RegisterForm, LoginForm
 from ASCII import ASCIIConverter
 
@@ -22,6 +23,7 @@ processed_image_path = ''
 user32 = ctypes.windll.user32
 screensize = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
 image_size = (int(screensize[0] * 0.6), 620)
+page_number = 1
 
 
 def resize_image(image_path, save_path, image_size):
@@ -75,9 +77,31 @@ def login():
         user = db_sess.query(User).filter(User.email == form.email.data).first()
         if user and user.check_password(form.password.data):
             login_user(user, remember=form.remember_me.data)
-            return redirect("/main")
+            return redirect("/filter_log")
         return render_template('login.html', message="Неправильный логин или пароль", form=form)
     return render_template("login.html", title="Авторизация", form=form)
+
+
+@app.route('/filter_log', methods=['GET', 'POST'])
+def show_log():
+    if request.method == 'GET':
+        db_sess = db_session.create_session()
+        filters = []
+        for i in range(1, 4):
+            filt = db_sess.query(Filter).filter(Filter.id == (i + (page_number - 1) * 3)).first()
+            if not filt:
+                continue
+            filters.append(filt)
+        params = {'filters': filters}
+        return render_template('filter_page.html', **params)
+
+    elif request.method == 'POST':
+        processed_image_path = 'static/img/processed_image.png'
+        current_image_path = 'static/img/current_image.jpg'
+        file = request.files['pw']
+        file.save(current_image_path)
+        resize_image(current_image_path, processed_image_path, image_size)
+        return 'gg'
 
 
 @app.route('/main', methods=['POST', 'GET'])
