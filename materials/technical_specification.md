@@ -20,7 +20,7 @@ Program code plan:
 
 3 У каждого фильтра свой отдельный класс, класс пользователя, класс новости.
 
-4 Графические библиотеки (Pillow, open-cv), flask, requests, numpy, wtforms, flask_wtf
+4 Графические библиотеки (Pillow, open-cv), flask, requests, numpy, wtforms, flask_wtf, sqlalchemy
 
 Graphical interface
 

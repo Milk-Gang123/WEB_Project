@@ -9,6 +9,7 @@ from flask_login import LoginManager, login_user, login_required, logout_user, c
 from data import db_session
 from data.db_session import global_init, create_session
 from data.users import User
+from forms.filter import CreateForm
 from data.filters import Filter
 from forms.user import RegisterForm, LoginForm
 from ASCII import ASCIIConverter
@@ -17,7 +18,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 login_manager = LoginManager()
 login_manager.init_app(app)
-
+current_user_id = -1
 current_image_path = ''
 processed_image_path = ''
 user32 = ctypes.windll.user32
@@ -59,7 +60,7 @@ def show_registration():
             name=form.name.data,
             surname=form.surname.data,
             nickname=form.nickname.data,
-            email=form.email.data
+            email=form.email.data,
         )
         user.set_password(form.password.data)
         db_sess.add(user)
@@ -68,13 +69,37 @@ def show_registration():
     return render_template('register.html', title='Регистрация', form=form)
 
 
+@app.route('/create_filter',  methods=['GET', 'POST'])
+@login_required
+def create_filter_page():
+    form = CreateForm()
+    if form.validate_on_submit():
+        global_init('db/blogs.db')
+        db_sess = db_session.create_session()
+        user_nickname = db_sess.query(User.nickname).filter(User.name == 'Alex').first()
+        user_nickname = user_nickname[0]
+        new_filter = Filter(
+            name=form.name.data,
+            description=form.description.data,
+            image=form.image.data,
+            file=form.file.data,
+            user_nickname=user_nickname
+        )
+        db_sess.add(new_filter)
+        db_sess.commit()
+        return redirect("/filter_log")
+    return render_template("adding_filter_page.html", form=form)
+
+
 @app.route('/login',  methods=['GET', 'POST'])
 def login():
+    global current_user_id
     form = LoginForm()
     if form.validate_on_submit():
         global_init('db/blogs.db')
         db_sess = db_session.create_session()
         user = db_sess.query(User).filter(User.email == form.email.data).first()
+        current_user_id = user.id
         if user and user.check_password(form.password.data):
             login_user(user, remember=form.remember_me.data)
             return redirect("/filter_log")
