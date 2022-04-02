@@ -1,3 +1,4 @@
+import io
 import os
 import ctypes
 
@@ -78,11 +79,13 @@ def create_filter_page():
         db_sess = db_session.create_session()
         user_nickname = db_sess.query(User.nickname).filter(User.name == 'Alex').first()
         user_nickname = user_nickname[0]
+        image = form.image.data.read()
+        file = form.file.data.read()
         new_filter = Filter(
             name=form.name.data,
             description=form.description.data,
-            image=form.image.data,
-            file=form.file.data,
+            image=image,
+            file=file,
             user_nickname=user_nickname
         )
         db_sess.add(new_filter)
@@ -116,6 +119,10 @@ def show_log():
             filt = db_sess.query(Filter).filter(Filter.id == (i + (page_number - 1) * 3)).first()
             if not filt:
                 continue
+            image = Image.open(io.BytesIO(filt.image))
+            image = image.resize((int(0.25 * screensize[0]), int(0.25 * screensize[1])))
+            filt.image = i
+            image.save(f'static/img/filter_image_{i}.png')
             filters.append(filt)
         params = {'filters': filters}
         return render_template('filter_page.html', **params)
