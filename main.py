@@ -112,11 +112,14 @@ def login():
 
 @app.route('/filter_log', methods=['GET', 'POST'])
 def show_log():
+    global page_number
+    if page_number < 1:
+        page_number = 1
     if request.method == 'GET':
         db_sess = db_session.create_session()
         filters = []
-        for i in range(1, 4):
-            filt = db_sess.query(Filter).filter(Filter.id == (i + (page_number - 1) * 3)).first()
+        for i in range(1, 3):
+            filt = db_sess.query(Filter).filter(Filter.id == (i + (page_number - 1) * 2)).first()
             if not filt:
                 continue
             image = Image.open(io.BytesIO(filt.image))
@@ -124,6 +127,7 @@ def show_log():
             filt.image = i
             image.save(f'static/img/filter_image_{i}.png')
             filters.append(filt)
+        db_sess.close()
         params = {'filters': filters}
         return render_template('filter_page.html', **params)
 
@@ -164,6 +168,19 @@ def make_ascii():
     app.draw_image(list_chars, processed_image_path)
     return redirect('/main')
 
+
+@app.route('/next_page')
+def go_next():
+    global page_number
+    page_number += 1
+    return redirect('/filter_log')
+
+
+@app.route('/prev_page')
+def go_prev():
+    global page_number
+    page_number -= 1
+    return redirect('/filter_log')
 
 
 if __name__ == "__main__":
