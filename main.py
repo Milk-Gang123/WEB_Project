@@ -111,7 +111,7 @@ def login():
     return render_template("login.html", title="Авторизация", form=form)
 
 
-@app.route('/filter_log', methods=['GET', 'POST'])
+@app.route('/filter_log', methods=['GET'])
 def show_log():
     global page_number
     if page_number < 1:
@@ -135,14 +135,6 @@ def show_log():
         params = {'filters': filters}
         return render_template('filter_page.html', **params)
 
-    elif request.method == 'POST':
-        processed_image_path = 'static/img/processed_image.png'
-        current_image_path = 'static/img/current_image.jpg'
-        file = request.files['pw']
-        file.save(current_image_path)
-        resize_image(current_image_path, processed_image_path, image_size)
-        return 'gg'
-
 
 @app.route('/main', methods=['POST', 'GET'])
 @login_required
@@ -153,15 +145,21 @@ def base():
     with open('filter.py', 'w', encoding='utf-8') as file:
         file.write(filt.file.decode('utf-8'))
     from filter import ImageFilter
-    params = {'current_image': current_image_path, 'processed_image': processed_image_path}
+    app_ = ImageFilter()
+    fields = app_.fields
+    params = {'current_image': current_image_path, 'processed_image': processed_image_path,
+              'fields': fields}
     if request.method == 'GET':
         return render_template('main.html', **params)
 
     elif request.method == 'POST':
         processed_image_path = 'static/img/processed_image.png'
-        current_image_path = 'static/img/current_image.jpg'
+        current_image_path = 'static/img/current_image.png'
         file = request.files['pw']
-        file.save(current_image_path)
+        image = Image.open(file)
+        image = image.resize(image_size)
+        image.show()
+        image.save(current_image_path)
         resize_image(current_image_path, processed_image_path, image_size)
         return 'gg'
 
@@ -173,15 +171,16 @@ def go_main(id):
     return redirect('/main')
 
 
-@app.route('/ascii', methods=['POST'])
-def make_ascii():
-    font_size = int(request.form['font-size'])
-    app = ASCIIConverter(image_size[0], image_size[1], font_size)
-    image = Image.open(current_image_path)
-    resized_image = image.resize(image_size)
-    gray_image = app.gray_image(resized_image)
-    list_chars = app.pix_to_ascii(gray_image)
-    app.draw_image(list_chars, processed_image_path)
+@app.route('/draw_image', methods=['POST'])
+def draw_image():
+    a = int(request.form['field1'])
+    from Pixelart import ImageFilter
+    app_ = ImageFilter()
+    try:
+        app_.field_1(a)
+    except Exception as e:
+        pass
+    app_.make_image(current_image_path)
     return redirect('/main')
 
 

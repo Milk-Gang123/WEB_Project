@@ -19,9 +19,10 @@
                     <li>
                         <button type="submit" class="button_plate" name="submit">Открыть</button>
                     </li>
-                    <li class="nav-item"><button class="button_plate"><a style="color: white" href="{{processed_image}}" download>Скачать</a></button></li>
+
                 </ul>
                 </form>
+                <button class="button_plate"><a style="color: white" href="{{processed_image}}" download>Скачать</a></button>
             </div>
         </div>
     </nav>
@@ -29,21 +30,19 @@
 <main>
     <div class="sidebar_l">
 	    <ul class="navbar-nav ml-auto">
-            <form action="/ascii" method="post">
-                <input type="number" step="1" name="font-size" id="font-size" width="5%">
+            <form action="/draw_image" method="post">
+                <ul class="navbar-nav ml-auto">
+                    {% for field in fields %}
+                        <li>{{field}}</li>
+                        <li class="nav-item"><input type="int" name="field1"></li>
+                    {% endfor %}
+                </ul>
                 <button type="submit" class="button_plate">Конвертировать</button>
             </form>
         </ul>
 	</div>
     <div class="sidebar_r">
-	    <ul class="navbar-nav ml-auto">
-            <li class="nav-item"><button class="button_plate"><a href="#" class="nav-link text-uppercase font-weight-bold">File</a></button></li>
-            <li class="nav-item"><button class="button_plate"><a href="#" class="nav-link text-uppercase font-weight-bold">Download</a></button></li>
-            <li class="nav-item"><button class="button_plate"><a href="#" class="nav-link text-uppercase font-weight-bold">Download</a></button></li>
-            <li class="nav-item"><button class="button_plate"><a href="#" class="nav-link text-uppercase font-weight-bold">Download</a></button></li>
-            <li class="nav-item"><button class="button_plate"><a href="#" class="nav-link text-uppercase font-weight-bold">Download</a></button></li>
-            <li class="nav-item"><button class="button_plate"><a href="#" class="nav-link text-uppercase font-weight-bold">Download</a></button></li>
-        </ul>
+
 	</div>
     <div class="content">
         {% if current_image != '' %}
