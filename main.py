@@ -26,6 +26,7 @@ user32 = ctypes.windll.user32
 screensize = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
 image_size = (int(screensize[0] * 0.6), 620)
 page_number = 1
+filter_id = 1
 
 
 def resize_image(image_path, save_path, image_size):
@@ -127,6 +128,9 @@ def show_log():
             filt.image = i
             image.save(f'static/img/filter_image_{i}.png')
             filters.append(filt)
+        if not filters:
+            page_number -= 1
+            return render_template('filter_page.html')
         db_sess.close()
         params = {'filters': filters}
         return render_template('filter_page.html', **params)
@@ -144,6 +148,11 @@ def show_log():
 @login_required
 def base():
     global current_image_path, processed_image_path
+    db_sess = db_session.create_session()
+    filt = db_sess.query(Filter).filter(Filter.id == filter_id).first()
+    with open('filter.py', 'w', encoding='utf-8') as file:
+        file.write(filt.file.decode('utf-8'))
+    from filter import ImageFilter
     params = {'current_image': current_image_path, 'processed_image': processed_image_path}
     if request.method == 'GET':
         return render_template('main.html', **params)
@@ -155,6 +164,13 @@ def base():
         file.save(current_image_path)
         resize_image(current_image_path, processed_image_path, image_size)
         return 'gg'
+
+
+@app.route('/go_main/<int:id>', methods=['GET', 'POST'])
+def go_main(id):
+    global filter_id
+    filter_id = id
+    return redirect('/main')
 
 
 @app.route('/ascii', methods=['POST'])
