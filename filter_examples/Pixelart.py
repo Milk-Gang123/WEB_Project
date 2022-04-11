@@ -4,7 +4,7 @@ from PIL import Image
 class ImageFilter:
     def __init__(self):
         self.pixel_size = 10
-        self.fields = ['Размер пикселя']
+        self.fields = [['Размер пикселя', 1]]
 
     def field_1(self, new_pixel_size):
         if new_pixel_size in range(0, 100):

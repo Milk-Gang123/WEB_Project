@@ -33,8 +33,8 @@
             <form action="/draw_image" method="post">
                 <ul class="navbar-nav ml-auto">
                     {% for field in fields %}
-                        <li>{{field}}</li>
-                        <li class="nav-item"><input type="int" name="field1"></li>
+                        <li style="align=center; color:white;">{{field[0]}}</li>
+                        <li class="nav-item"><input name="field{{field[1]}}"></li>
                     {% endfor %}
                 </ul>
                 <button type="submit" class="button_plate">Конвертировать</button>

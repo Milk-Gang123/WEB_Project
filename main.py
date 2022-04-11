@@ -1,19 +1,17 @@
 import io
-import os
 import ctypes
 
-import flask
 from PIL import Image
 from flask import Flask, render_template, request
 from werkzeug.utils import redirect
-from flask_login import LoginManager, login_user, login_required, logout_user, current_user
+from flask_login import LoginManager, login_user, login_required
 from data import db_session
-from data.db_session import global_init, create_session
+from data.db_session import global_init
 from data.users import User
 from forms.filter import CreateForm
 from data.filters import Filter
+from data import user_api
 from forms.user import RegisterForm, LoginForm
-from ASCII import ASCIIConverter
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
@@ -174,10 +172,18 @@ def go_main(id):
 @app.route('/draw_image', methods=['POST'])
 def draw_image():
     a = int(request.form['field1'])
-    from Pixelart import ImageFilter
+    from filter_examples.Pixelart import ImageFilter
     app_ = ImageFilter()
     try:
         app_.field_1(a)
+    except Exception as e:
+        pass
+    try:
+        app_.field_2(a)
+    except Exception as e:
+        pass
+    try:
+        app_.field_3(a)
     except Exception as e:
         pass
     app_.make_image(current_image_path)
@@ -200,5 +206,5 @@ def go_prev():
 
 if __name__ == "__main__":
     db_session.global_init("db/blogs.db")
-    #app.register_blueprint(user_api.blueprint)
+    app.register_blueprint(user_api.blueprint)
     app.run(port=8080, host='127.0.0.1')
