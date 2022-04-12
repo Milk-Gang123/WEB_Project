@@ -1,5 +1,6 @@
 import io
 import ctypes
+import os
 
 from PIL import Image
 from flask import Flask, render_template, request
@@ -23,8 +24,10 @@ processed_image_path = ''
 user32 = ctypes.windll.user32
 screensize = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
 image_size = (int(screensize[0] * 0.6), 620)
+
 page_number = 1
 filter_id = 1
+current_fields = []
 
 
 def resize_image(image_path, save_path, image_size):
@@ -137,14 +140,18 @@ def show_log():
 @app.route('/main', methods=['POST', 'GET'])
 @login_required
 def base():
-    global current_image_path, processed_image_path
+    global current_image_path, processed_image_path, current_fields
     db_sess = db_session.create_session()
     filt = db_sess.query(Filter).filter(Filter.id == filter_id).first()
     with open('filter.py', 'w', encoding='utf-8') as file:
         file.write(filt.file.decode('utf-8'))
     from filter import ImageFilter
     app_ = ImageFilter()
-    fields = app_.fields
+    if current_fields != [] and filter_id == filt.id:
+        fields = current_fields
+    else:
+        current_fields = app_.fields
+        fields = current_fields
     params = {'current_image': current_image_path, 'processed_image': processed_image_path,
               'fields': fields}
     if request.method == 'GET':
@@ -156,34 +163,45 @@ def base():
         file = request.files['pw']
         image = Image.open(file)
         image = image.resize(image_size)
-        image.show()
         image.save(current_image_path)
         resize_image(current_image_path, processed_image_path, image_size)
-        return 'gg'
+        return redirect('/main')
 
 
 @app.route('/go_main/<int:id>', methods=['GET', 'POST'])
 def go_main(id):
-    global filter_id
+    global filter_id, current_fields, current_image_path, processed_image_path
     filter_id = id
+    current_fields = []
+    os.remove('static/img/current_image.png')
+    os.remove('static/img/processed_image.png')
+    current_image_path = ''
+    processed_image_path = ''
     return redirect('/main')
 
 
 @app.route('/draw_image', methods=['POST'])
 def draw_image():
-    a = int(request.form['field1'])
+    global current_fields
     from filter_examples.Pixelart import ImageFilter
     app_ = ImageFilter()
+    current_fields = app_.fields
     try:
+        a = request.form['field1']
         app_.field_1(a)
+        current_fields[0][1] = a
+    except Exception as e:
+        print(e)
+    try:
+        b = request.form['field2']
+        app_.field_2(b)
+        current_fields[1][1] = b
     except Exception as e:
         pass
     try:
-        app_.field_2(a)
-    except Exception as e:
-        pass
-    try:
-        app_.field_3(a)
+        c = request.form['field3']
+        app_.field_3(c)
+        current_fields[2][1] = c
     except Exception as e:
         pass
     app_.make_image(current_image_path)

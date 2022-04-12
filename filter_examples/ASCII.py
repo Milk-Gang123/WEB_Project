@@ -3,14 +3,14 @@ import pygame
 
 
 class ASCIIConverter():
-    def __init__(self, width, height, font_size):
+    def __init__(self, font_size):
         self.ascii_chars = [' ', '.', '+', '*', '~', 'x', '#', 'w', '%', '8', '@']
         self.font_size = font_size
         pygame.font.init()
         self.font = pygame.font.SysFont('arial', self.font_size, bold=True)
         self.char_step = int(self.font_size * 0.6)
-        self.width = width
-        self.height = height
+        self.width = 100
+        self.height = 100
 
     def resize_image(self, image, new_width=100):
         width, height = image.size
@@ -91,6 +91,19 @@ class Colored_ASCII(ASCIIConverter):
                     pass
         screen = pygame.transform.rotate(screen, -90)
         pygame.image.save(screen, 'static/img/processed_image.png')
+
+    def make_image(self, file):
+        image = Image.open(file)
+        image_width, image_height = image.size
+        self.width, self.height = image_width, image_height
+        resized_image = self.resize_image(image, self.width)
+        gray_image = self.gray_image(resized_image)
+        list_chars = self.pix_to_ascii(gray_image)
+        list_colors = self.get_palette(resized_image)
+        self.draw_image(list_chars, list_colors)
+
+
+
 
 
 if __name__ == "__main__":

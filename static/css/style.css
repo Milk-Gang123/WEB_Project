@@ -63,7 +63,6 @@
      background: #3b3b3b;
      float: left;
      width: 15%;
-     height: 620px;
      border-radius: 6px;
 }
 .footer {
@@ -138,7 +137,6 @@
 .margin_left {
     margin-left: 50px;
 }
-body {
-  height: 100vh;
-
-}
+html, body {
+       height: 100%;
+      }
