@@ -5,7 +5,7 @@ import os
 from PIL import Image
 from flask import Flask, render_template, request
 from werkzeug.utils import redirect
-from flask_login import LoginManager, login_user, login_required, logout_user
+from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from data import db_session
 from data.db_session import global_init
 from data.users import User
@@ -28,13 +28,13 @@ image_size = (int(screensize[0] * 0.6), 620)
 page_number = 1
 filter_id = 1
 current_fields = []
-current_user_id = -1
 
 
 def resize_image(image_path, save_path, image_size):
     image = Image.open(image_path)
     new_image = image.resize(image_size)
     new_image.save(save_path)
+
 
 def clear():
     global processed_image_path, current_image_path
@@ -88,7 +88,22 @@ def show_registration():
     return render_template('register.html', title='Регистрация', form=form)
 
 
-@app.route('/create_filter',  methods=['GET', 'POST'])
+@app.route('/delete_filter', methods=['GET', 'POST'])
+@login_required
+def delete_filter_page():
+    db_sess = db_session.create_session()
+    user_nickname = db_sess.query(User.nickname).filter(User.id == current_user.get_id()).first()
+    user_nickname = user_nickname[0]
+    filters = list(db_sess.query(Filter).filter(Filter.user_nickname == user_nickname))
+    params = {'filters': filters}
+    if request.method == 'GET':
+        return render_template('delete_filter_page.html', **params)
+
+    elif request.method == 'POST':
+        file = request.files['pw']
+
+
+@app.route('/create_filter', methods=['GET', 'POST'])
 @login_required
 def create_filter_page():
     form = CreateForm()
@@ -102,7 +117,7 @@ def create_filter_page():
         if not form.file.data.filename.endswith('.py'):
             return render_template("adding_filter_page.html", form=form, **{'message': 'Ваш файл с кодом не '
                                                                                        'может быть открыт'})
-        user_nickname = db_sess.query(User.nickname).filter(User.id == current_user_id).first()
+        user_nickname = db_sess.query(User.nickname).filter(User.id == current_user.get_id()).first()
         user_nickname = user_nickname[0]
         image = form.image.data.read()
         file = form.file.data.read()
@@ -119,15 +134,13 @@ def create_filter_page():
     return render_template("adding_filter_page.html", form=form)
 
 
-@app.route('/login',  methods=['GET', 'POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-    global current_user_id
     form = LoginForm()
     if form.validate_on_submit():
         global_init('db/blogs.db')
         db_sess = db_session.create_session()
         user = db_sess.query(User).filter(User.email == form.email.data).first()
-        current_user_id = user.id
         if user and user.check_password(form.password.data):
             login_user(user, remember=form.remember_me.data)
             return redirect("/filter_log")
