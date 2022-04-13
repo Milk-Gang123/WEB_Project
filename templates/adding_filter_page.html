@@ -1,7 +1,11 @@
 {% extends "filter_base.html" %}
 
 {% block content %}
-
+{% if message %}
+    <div style="position: absolute; margin-left:82%;">
+        <div class="alert alert-danger" align="center">{{message}}</div>
+    </div>
+{% endif %}
 <form method="post" enctype="multipart/form-data" class="reg_form" novalidate>
     <p>
         {{ form.csrf_token }}

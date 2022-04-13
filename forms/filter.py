@@ -11,5 +11,5 @@ class CreateForm(FlaskForm):
     user = orm.relation("User", back_populates='user')
     description = StringField('Описание', validators=[DataRequired()])
     image = FileField('Изображение', validators=[DataRequired()])
-    file = FileField('Изображение', validators=[DataRequired()])
+    file = FileField('Код фильтра', validators=[DataRequired()])
     submit = SubmitField('Создать')

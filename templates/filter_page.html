@@ -1,13 +1,13 @@
 {% extends "filter_base.html" %}
 
 {% block content %}
-<h1 class="alert alert-custom  fade in alert-dismissable show" align="left">Python Art</h1>
+<h1 class="alert alert-custom  fade in alert-dismissable show" align="left">Страница {{page_number}}</h1>
 
 <nav class="navbar navbar-expand-lg fixed-top py-3">
   <div style="position: absolute; margin-left: 60%; margin-top: 3%; z-index:10;">
     <a href="/create_filter" class="button_plate">Создать фильтр</a>
     <a href="/#" class="button_plate">Удалить фильтр</a>
-    <a href="/#" class="button_plate">Выйти</a>
+    <a href="/logout" class="button_plate">Выйти</a>
   </div>
 </nav>
 

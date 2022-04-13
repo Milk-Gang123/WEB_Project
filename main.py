@@ -5,7 +5,7 @@ import os
 from PIL import Image
 from flask import Flask, render_template, request
 from werkzeug.utils import redirect
-from flask_login import LoginManager, login_user, login_required
+from flask_login import LoginManager, login_user, login_required, logout_user
 from data import db_session
 from data.db_session import global_init
 from data.users import User
@@ -18,7 +18,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 login_manager = LoginManager()
 login_manager.init_app(app)
-current_user_id = -1
+
 current_image_path = ''
 processed_image_path = ''
 user32 = ctypes.windll.user32
@@ -28,6 +28,7 @@ image_size = (int(screensize[0] * 0.6), 620)
 page_number = 1
 filter_id = 1
 current_fields = []
+current_user_id = -1
 
 
 def resize_image(image_path, save_path, image_size):
@@ -35,12 +36,27 @@ def resize_image(image_path, save_path, image_size):
     new_image = image.resize(image_size)
     new_image.save(save_path)
 
+def clear():
+    global processed_image_path, current_image_path
+    try:
+        os.remove('static/img/current_image.png')
+        os.remove('static/img/processed_image.png')
+    except Exception:
+        pass
+
 
 @login_manager.user_loader
 def load_user(user_id):
     global_init('db/blogs.db')
     db_sess = db_session.create_session()
     return db_sess.query(User).get(user_id)
+
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect("/")
 
 
 @app.route('/')
@@ -79,7 +95,14 @@ def create_filter_page():
     if form.validate_on_submit():
         global_init('db/blogs.db')
         db_sess = db_session.create_session()
-        user_nickname = db_sess.query(User.nickname).filter(User.name == 'Alex').first()
+        if not (form.image.data.filename.endswith('.jpg') or form.image.data.filename.endswith('.jpeg')
+                or form.image.data.filename.endswith('.png')):
+            return render_template("adding_filter_page.html", form=form, **{'message': 'Ваш файл с изображением не '
+                                                                                       'может быть открыт'})
+        if not form.file.data.filename.endswith('.py'):
+            return render_template("adding_filter_page.html", form=form, **{'message': 'Ваш файл с кодом не '
+                                                                                       'может быть открыт'})
+        user_nickname = db_sess.query(User.nickname).filter(User.id == current_user_id).first()
         user_nickname = user_nickname[0]
         image = form.image.data.read()
         file = form.file.data.read()
@@ -131,9 +154,9 @@ def show_log():
             filters.append(filt)
         if not filters:
             page_number -= 1
-            return render_template('filter_page.html')
+            return redirect('/filter_log')
         db_sess.close()
-        params = {'filters': filters}
+        params = {'filters': filters, 'page_number': page_number}
         return render_template('filter_page.html', **params)
 
 
@@ -158,9 +181,14 @@ def base():
         return render_template('main.html', **params)
 
     elif request.method == 'POST':
+        file = request.files['pw']
+        if not (file.filename.endswith('.jpg') or file.filename.endswith('.jpeg')
+                or file.filename.endswith('.png')):
+            params['message'] = 'Ваш файл с изображением не может быть открыт'
+            clear()
+            return render_template('main.html', **params)
         processed_image_path = 'static/img/processed_image.png'
         current_image_path = 'static/img/current_image.png'
-        file = request.files['pw']
         image = Image.open(file)
         image = image.resize(image_size)
         image.save(current_image_path)
@@ -173,8 +201,7 @@ def go_main(id):
     global filter_id, current_fields, current_image_path, processed_image_path
     filter_id = id
     current_fields = []
-    os.remove('static/img/current_image.png')
-    os.remove('static/img/processed_image.png')
+    clear()
     current_image_path = ''
     processed_image_path = ''
     return redirect('/main')
