@@ -31,7 +31,7 @@ class ASCIIConverter():
         pixels = image.getdata()
         chars = []
         for i in pixels:
-            chars.append(self.ascii_chars[i // len(self.ascii_chars)])
+            chars.append(self.ascii_chars[i // 25])
         chars = ''.join(chars)
         list_chars = []
         for i in range(self.height):
@@ -48,7 +48,7 @@ class ImageFilter(ASCIIConverter):
         self.char_step = int(self.font_size * 0.6)
         self.width = 100
         self.height = 100
-        self.ascii_chars = [' ', ':', 'o', 'x', '#', '&', '$', '&', 'W', '8', '@']
+        self.ascii_chars = '.:ox#&$&W8@'
         self.fields = [['Размер шрифта', self.font_size, 1], ['Набор символов', self.ascii_chars, 2]]
 
     def field_1(self, new_font_size):
@@ -61,10 +61,7 @@ class ImageFilter(ASCIIConverter):
 
 
     def field_2(self, new_ascii_chars):
-        s = []
-        for i in new_ascii_chars:
-            s.append(i)
-        self.ascii_chars = s
+        self.ascii_chars = new_ascii_chars
 
     def draw_image(self, list_chars):
         screen = pygame.display.set_mode((self.height, self.width))
@@ -73,7 +70,6 @@ class ImageFilter(ASCIIConverter):
             for x in range(0, self.height, self.char_step):
                 try:
                     char = list_chars[x][-y]
-                    print(char)
                     rendered_char = self.font.render(char, False, (255, 255, 255))
                     rendered_char = pygame.transform.rotate(rendered_char, -90)
                     screen.blit(rendered_char, (x, y))

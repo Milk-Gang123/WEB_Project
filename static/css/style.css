@@ -1,7 +1,7 @@
 .button_plate {
   align-items: center;
   appearance: none;
-  background-image: radial-gradient(100% 100% at 100% 0, #5adaff 0, #5468ff 100%);
+  background-image: radial-gradient(100% 100% at 100% 0, #ac26b5 0, #2b003d 100%);
   border: 0;
   border-radius: 6px;
   box-shadow: rgba(45, 35, 66, .4) 0 2px 4px,rgba(45, 35, 66, .3) 0 7px 13px -3px,rgba(58, 65, 111, .5) 0 -3px 0 inset;
@@ -49,10 +49,10 @@
   width: 300px;
   float: right;
   height: 1000px;
-  background: black;
+  background: #2b003d;
 }
 .sidebar_r {
-     background: #3b3b3b;
+     background: #2b003d;
      float: right;
      width: 15%;
      height: 620px;
@@ -60,20 +60,14 @@
      position: relative;
 }
 .sidebar_l {
-     background: #3b3b3b;
+     background: #2b003d;
      float: left;
      width: 15%;
      height: 620px;
      border-radius: 6px;
 }
-.footer {
-    background: #3b3b3b;
-	width: 100%;
-	height: 40px;
-	top: 95%;
-}
 .content {
-     background: #212121;
+     background: #2b003d;
      width: 60%;
      height: 620px;
      margin-left: 20%;
