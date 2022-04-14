@@ -95,12 +95,17 @@ def delete_filter_page():
     user_nickname = db_sess.query(User.nickname).filter(User.id == current_user.get_id()).first()
     user_nickname = user_nickname[0]
     filters = list(db_sess.query(Filter).filter(Filter.user_nickname == user_nickname))
-    params = {'filters': filters}
+    params = {'filters': filters, 'number': len(filters)}
     if request.method == 'GET':
         return render_template('delete_filter_page.html', **params)
 
     elif request.method == 'POST':
-        file = request.files['pw']
+        print(filters)
+        for i in request.form:
+            print(i)
+            db_sess.delete(filters[int(i[2:]) - 1])
+        db_sess.commit()
+        return redirect('/filter_log')
 
 
 @app.route('/create_filter', methods=['GET', 'POST'])
@@ -223,9 +228,12 @@ def go_main(id):
 @app.route('/draw_image', methods=['POST'])
 def draw_image():
     global current_fields
-    from filter_examples.Pixelart import ImageFilter
+    from filter import ImageFilter
     app_ = ImageFilter()
     current_fields = app_.fields
+    print(app_.width)
+    print(app_.height)
+    print(app_.font_size)
     try:
         a = request.form['field1']
         app_.field_1(a)

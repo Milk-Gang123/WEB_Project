@@ -31,7 +31,7 @@ class ASCIIConverter():
         pixels = image.getdata()
         chars = []
         for i in pixels:
-            chars.append(self.ascii_chars[i // 25])
+            chars.append(self.ascii_chars[i // len(self.ascii_chars)])
         chars = ''.join(chars)
         list_chars = []
         for i in range(self.height):
@@ -39,52 +39,42 @@ class ASCIIConverter():
 
         return list_chars
 
-    def draw_image(self, list_chars, route):
-        screen = pygame.display.set_mode((self.height, self.width))
-        screen.fill('black')
-        for y in range(0, self.width, self.char_step):
-            for x in range(0, self.height, self.char_step):
-                try:
-                    char = list_chars[x][-y]
-                    rendered_char = self.font.render(char, False, (255, 255, 255))
-                    rendered_char = pygame.transform.rotate(rendered_char, -90)
-                    screen.blit(rendered_char, (x, y))
-                except Exception:
-                    pass
-        screen = pygame.transform.rotate(screen, -90)
-        pygame.image.save(screen, route)
 
-
-class Colored_ASCII(ASCIIConverter):
-    def __init__(self, width, height, font_size):
-        self.font_size = font_size
+class ImageFilter(ASCIIConverter):
+    def __init__(self):
+        self.font_size = 10
         pygame.font.init()
         self.font = pygame.font.SysFont('arial', self.font_size, bold=True)
         self.char_step = int(self.font_size * 0.6)
-        self.width = width
-        self.height = height
+        self.width = 100
+        self.height = 100
         self.ascii_chars = [' ', ':', 'o', 'x', '#', '&', '$', '&', 'W', '8', '@']
+        self.fields = [['Размер шрифта', self.font_size, 1], ['Набор символов', self.ascii_chars, 2]]
 
-    def get_palette(self, image):
-        list_colors = []
-        colors = []
-        pixels = image.getdata()
-        for i in pixels:
-            colors.append(i)
-        for i in range(self.height):
-            list_colors.append(colors[i * self.width:(i + 1) * self.width])
+    def field_1(self, new_font_size):
+        self.font_size = int(new_font_size)
+        self.font = pygame.font.SysFont('arial', self.font_size, bold=True)
+        self.char_step = int(self.font_size * 0.6)
+        print(self.font_size)
+        print(self.font)
+        print(self.char_step)
 
-        return list_colors
 
-    def draw_image(self, list_chars, list_colors):
+    def field_2(self, new_ascii_chars):
+        s = []
+        for i in new_ascii_chars:
+            s.append(i)
+        self.ascii_chars = s
+
+    def draw_image(self, list_chars):
         screen = pygame.display.set_mode((self.height, self.width))
         screen.fill('black')
         for y in range(0, self.width, self.char_step):
             for x in range(0, self.height, self.char_step):
                 try:
                     char = list_chars[x][-y]
-                    char_color = list_colors[x][-y]
-                    rendered_char = self.font.render(char, False, char_color)
+                    print(char)
+                    rendered_char = self.font.render(char, False, (255, 255, 255))
                     rendered_char = pygame.transform.rotate(rendered_char, -90)
                     screen.blit(rendered_char, (x, y))
                 except Exception:
@@ -99,18 +89,4 @@ class Colored_ASCII(ASCIIConverter):
         resized_image = self.resize_image(image, self.width)
         gray_image = self.gray_image(resized_image)
         list_chars = self.pix_to_ascii(gray_image)
-        list_colors = self.get_palette(resized_image)
-        self.draw_image(list_chars, list_colors)
-
-
-
-
-
-if __name__ == "__main__":
-    app = Colored_ASCII(720, 480, 8)
-    image = Image.open('../static/img/filter_page_background.png')
-    resized_image = app.resize_image(image, app.width)
-    gray_image = app.gray_image(resized_image)
-    list_chars = app.pix_to_ascii(gray_image)
-    list_colors = app.get_palette(resized_image)
-    app.draw_image(list_chars, list_colors)
+        self.draw_image(list_chars)
