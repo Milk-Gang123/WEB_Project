@@ -184,11 +184,13 @@ def base():
     global current_image_path, processed_image_path, current_fields
     db_sess = db_session.create_session()
     filt = db_sess.query(Filter).filter(Filter.id == filter_id).first()
-    with open('filter.py', 'w', encoding='utf-8') as file:
+    with open(f'filter{filter_id}.py', 'w', encoding='utf-8') as file:
         file.write(filt.file.decode('utf-8'))
-    from filter import ImageFilter
-    app_ = ImageFilter()
-    if current_fields != [] and filter_id == filt.id:
+        file.close()
+    file = __import__(f'filter{filter_id}')
+    app_ = file.ImageFilter()
+
+    if current_fields != []:
         fields = current_fields
     else:
         current_fields = app_.fields
@@ -217,6 +219,10 @@ def base():
 @app.route('/go_main/<int:id>', methods=['GET', 'POST'])
 def go_main(id):
     global filter_id, current_fields, current_image_path, processed_image_path
+    try:
+        os.remove(f'filter{filter_id}.py')
+    except FileNotFoundError:
+        pass
     filter_id = id
     current_fields = []
     clear()
@@ -228,12 +234,9 @@ def go_main(id):
 @app.route('/draw_image', methods=['POST'])
 def draw_image():
     global current_fields
-    from filter import ImageFilter
-    app_ = ImageFilter()
+    file = __import__(f'filter{filter_id}')
+    app_ = file.ImageFilter()
     current_fields = app_.fields
-    print(app_.width)
-    print(app_.height)
-    print(app_.font_size)
     try:
         a = request.form['field1']
         app_.field_1(a)
