@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1 class="alert alert-dark" align="right">Python Art</h1>
+<h1 class="alert alert-custom  fade in alert-dismissable show" align="right">Python Art</h1>
 <header class="header">
     <nav class="navbar navbar-expand-lg fixed-top py-3">
         <div class="margin_left">
             <div id="navbarSupportedContentUp" class="collapse navbar-collapse">
-                <button class="button_plate"><a href="/filter_log">⬅ На главную</a></button>
+                <button class="button_plate"><a style="color: white; text-decoration: none !important;" href="/filter_log">⬅ На главную</a></button>
             </div>
         </div>
     </nav>
@@ -47,7 +47,7 @@
 
         </ul>
         </form>
-        <button style="margin: 0% 3% 3% 15%;" class="button_plate"><a style="color: white" href="{{processed_image}}" download>Скачать</a></button>
+        <button style="margin: 0% 3% 3% 15%;" class="button_plate"><a style="color: white; text-decoration: none !important;" href="{{processed_image}}" download>Скачать</a></button>
 	</div>
     <div class="content">
         {% if current_image != '' %}
