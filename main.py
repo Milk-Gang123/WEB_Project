@@ -23,14 +23,10 @@ login_manager.init_app(app)
 current_image_path = ''
 processed_image_path = ''
 
-from screeninfo import get_monitors
+monitor_height = 620
+monitor_width = 1152
 
-for m in get_monitors():
-    monitor_height = m.height
-    monitor_width = m.width
-
-
-image_size = (int(monitor_width * 0.6), 620)
+image_size = (1152, 620)
 
 page_number = 1
 filter_id = 1
