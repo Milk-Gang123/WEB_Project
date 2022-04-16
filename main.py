@@ -1,5 +1,6 @@
 import io
 import ctypes
+import logging
 import os
 # troll
 from PIL import Image
@@ -15,6 +16,8 @@ from data import user_api
 from forms.user import RegisterForm, LoginForm
 
 app = Flask(__name__)
+logging.basicConfig(level=logging.INFO)
+
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 login_manager = LoginManager()
 login_manager.init_app(app)
