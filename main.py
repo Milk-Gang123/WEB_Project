@@ -23,9 +23,15 @@ login_manager.init_app(app)
 
 current_image_path = ''
 processed_image_path = ''
-user32 = ctypes.windll.user32
-screensize = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
-image_size = (int(screensize[0] * 0.6), 620)
+
+from tkinter import Tk
+
+root = Tk()
+
+monitor_height = root.winfo_screenheight()
+monitor_width = root.winfo_screenwidth()
+
+image_size = (int(monitor_width * 0.6), 620)
 
 page_number = 1
 filter_id = 1
@@ -167,7 +173,7 @@ def show_log():
                 continue
             else:
                 image = Image.open(io.BytesIO(filt.image))
-                image = image.resize((int(0.25 * screensize[0]), int(0.25 * screensize[1])))
+                image = image.resize((int(0.25 * monitor_width), int(0.25 * monitor_height)))
                 filt.image = i
                 image.save(f'static/img/filter_image_{i}.png')
                 filters.append(filt)
