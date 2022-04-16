@@ -255,7 +255,7 @@ def draw_image():
         c = request.form['field3']
         app_.field_3(c)
         current_fields[2][1] = c
-    except Exception as e:
+    except Exception as e:  # program go brrrrrrrrrrrrrrrr
         pass
     app_.make_image(current_image_path)
     return redirect('/main')
