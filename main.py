@@ -1,5 +1,4 @@
 import io
-import ctypes
 import logging
 import os
 from PIL import Image
@@ -13,7 +12,7 @@ from forms.filter import CreateForm
 from data.filters import Filter
 from data import user_api
 from forms.user import RegisterForm, LoginForm
-
+from win32api import GetSystemMetrics
 app = Flask(__name__)
 logging.basicConfig(level=logging.INFO)
 
@@ -23,9 +22,9 @@ login_manager.init_app(app)
 
 current_image_path = ''
 processed_image_path = ''
-user32 = ctypes.windll.user32
-screensize = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
-image_size = (int(screensize[0] * 0.6), 620)
+
+
+image_size = (int(GetSystemMetrics(0) * 0.6), 620)
 
 page_number = 1
 filter_id = 1
@@ -167,7 +166,7 @@ def show_log():
                 continue
             else:
                 image = Image.open(io.BytesIO(filt.image))
-                image = image.resize((int(0.25 * screensize[0]), int(0.25 * screensize[1])))
+                image = image.resize((int(0.25 * GetSystemMetrics(0)), int(0.25 * GetSystemMetrics(1))))
                 filt.image = i
                 image.save(f'static/img/filter_image_{i}.png')
                 filters.append(filt)
