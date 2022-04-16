@@ -226,6 +226,7 @@ def go_main(id):
     filter_id = id
     current_fields = []
     clear()
+    current_image_path = "a"
     current_image_path = ""
     processed_image_path = ""
     return redirect('/main')
