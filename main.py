@@ -165,11 +165,12 @@ def show_log():
             filt = db_sess.query(Filter).filter(Filter.id == (i + (page_number - 1) * 2)).first()
             if not filt:
                 continue
-            image = Image.open(io.BytesIO(filt.image))
-            image = image.resize((int(0.25 * screensize[0]), int(0.25 * screensize[1])))
-            filt.image = i
-            image.save(f'static/img/filter_image_{i}.png')
-            filters.append(filt)
+            else:
+                image = Image.open(io.BytesIO(filt.image))
+                image = image.resize((int(0.25 * screensize[0]), int(0.25 * screensize[1])))
+                filt.image = i
+                image.save(f'static/img/filter_image_{i}.png')
+                filters.append(filt)
         if not filters:
             page_number -= 1
             return redirect('/filter_log')
@@ -226,7 +227,6 @@ def go_main(id):
     filter_id = id
     current_fields = []
     clear()
-    current_image_path = "a"
     current_image_path = ""
     processed_image_path = ""
     return redirect('/main')
