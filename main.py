@@ -1,5 +1,4 @@
 import io
-import ctypes
 import logging
 import os
 from PIL import Image
@@ -24,12 +23,12 @@ login_manager.init_app(app)
 current_image_path = ''
 processed_image_path = ''
 
-from tkinter import Tk
+from screeninfo import get_monitors
 
-root = Tk()
+for m in get_monitors():
+    monitor_height = m.height
+    monitor_width = m.width
 
-monitor_height = root.winfo_screenheight()
-monitor_width = root.winfo_screenwidth()
 
 image_size = (int(monitor_width * 0.6), 620)
 
