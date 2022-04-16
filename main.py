@@ -102,9 +102,7 @@ def delete_filter_page():
         return render_template('delete_filter_page.html', **params)
 
     elif request.method == 'POST':
-        print(filters)
         for i in request.form:
-            print(i)
             db_sess.delete(filters[int(i[2:]) - 1])
         db_sess.commit()
         return redirect('/filter_log')
@@ -244,7 +242,7 @@ def draw_image():
         app_.field_1(a)
         current_fields[0][1] = a
     except Exception as e:
-        print(e)
+        pass
     try:
         b = request.form['field2']
         app_.field_2(b)
