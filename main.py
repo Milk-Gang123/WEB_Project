@@ -1,7 +1,7 @@
 import io
 import ctypes
 import os
-
+# troll
 from PIL import Image
 from flask import Flask, render_template, request
 from werkzeug.utils import redirect
