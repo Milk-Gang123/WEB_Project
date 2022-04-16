@@ -221,7 +221,7 @@ def go_main(id):
     global filter_id, current_fields, current_image_path, processed_image_path
     try:
         os.remove(f'filter{filter_id}.py')
-    except FileNotFoundError:
+    except Exception:
         pass
     filter_id = id
     current_fields = []
