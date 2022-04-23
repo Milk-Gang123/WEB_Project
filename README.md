@@ -5,8 +5,6 @@
 созданные при помощи python, а так же самому попробовать создать свой фильтр.
 ### Стартовая страница
 ![Стартовая страница](https://github.com/Milk-Gang123/WEB_Project/blob/main/materials/images/start_page.png?raw=true)
-### Краткий обзор
-coming soon...
 ### Ссылка
 coming soon...
 ### Сведения
