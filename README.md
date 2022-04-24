@@ -6,6 +6,6 @@
 ### Стартовая страница
 ![Стартовая страница](https://github.com/Milk-Gang123/WEB_Project/blob/main/materials/images/start_page.png?raw=true)
 ### Ссылка
-coming soon...
+https://web-project-ylyceum.herokuapp.com/
 ### Сведения
 [![](https://tokei.rs/b1/github/Milk-Gang123/WEB_Project)](https://github.com/Milk-Gang123/WEB_Project)
